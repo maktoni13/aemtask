@@ -9,6 +9,9 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Company name configuration service component implementation for replace filter
+ */
 @Component(
         service = { CompanyNameConfig.class },
         immediate = true
