@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.Servlet;
-import javax.servlet.ServletException;
 import java.io.IOException;
 
 /**
@@ -34,10 +33,11 @@ import java.io.IOException;
         })
 public class UpsideDownImageServlet extends SlingSafeMethodsServlet {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(UpsideDownImageServlet.class);
-
+    private static final String LOGGER_ERROR_MSG = "Error while trying to transform image: ";
     private static final String LOGGER_INFO_MSG = "Image Upside-Down Servlet";
     private static final double QUALITY = 1.0;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(UpsideDownImageServlet.class);
 
     @Reference
     private ImageUpsideDownTurn imageUpsideDownTurn;
@@ -55,7 +55,7 @@ public class UpsideDownImageServlet extends SlingSafeMethodsServlet {
             layer = this.imageUpsideDownTurn.doRotate(image.getLayer(false, false, false));
             mimeType = image.getMimeType();
         } catch (RepositoryException e) {
-            e.printStackTrace();
+            LOGGER.error(LOGGER_ERROR_MSG + request.getRequestURI(), e);
         }
 
         if (layer != null && mimeType != null) {
