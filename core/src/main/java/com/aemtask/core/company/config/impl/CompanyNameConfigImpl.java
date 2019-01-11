@@ -1,6 +1,6 @@
-package com.aemtask.core.config.impl;
+package com.aemtask.core.company.config.impl;
 
-import com.aemtask.core.config.CompanyNameConfig;
+import com.aemtask.core.company.config.CompanyNameConfig;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
