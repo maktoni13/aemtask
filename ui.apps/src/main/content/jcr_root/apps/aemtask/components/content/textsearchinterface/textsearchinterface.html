@@ -1,0 +1,11 @@
+<sly data-sly-test.modelFulfilled="${properties.text && properties.paths && properties.searchApi}">
+    <pre data-sly-use.textsearch="com.aemtask.core.search.model.TextSearchInterfaceModel">
+        Search results: ${textsearch.searchResults.size} items found
+        <pre data-sly-repeat="${textsearch.searchResults}"><a href="${item.path}">${item.name}</a></pre>
+    </pre>
+</sly>
+<sly data-sly-test="${!modelFulfilled}">
+    <pre>
+        Please set component properties
+    </pre>
+</sly>
