@@ -1,5 +1,6 @@
 package com.aemtask.core.search.service.impl;
 
+import com.aemtask.core.search.config.TextSearchConfig;
 import com.aemtask.core.search.service.TextSearchProvider;
 import com.day.cq.search.PredicateGroup;
 import com.day.cq.search.Query;
@@ -25,18 +26,36 @@ import java.util.Map;
  * Text search provider implementation with Query Builder
  */
 @Component(
-        service = { TextSearchProvider.class },
+        service = {TextSearchProvider.class},
         immediate = true
 )
 public class QueryBuilderTextSearchProviderImpl implements TextSearchProvider {
 
     private static final String QUERY_BUILDER_ERROR_MSG = "Query builder creation error: ";
     private static final String QUERY_BUILDER_API = "QueryBuilder";
+    private static final String GROUP_PATH_KEY_PREDICATE_TEMPLATE = "group.%s_path";
+    private static final String GROUP_OR_FLAG_KEY = "group.p.or";
+    private static final String FULLTEXT_KEY = "fulltext";
+    private static final String TYPE_KEY = "type";
 
     private final Logger LOGGER = LoggerFactory.getLogger(QueryBuilderTextSearchProviderImpl.class);
 
     @Reference
     private ResourceResolverFactory resolverFactory;
+
+    @Reference
+    private TextSearchConfig textSearchConfig;
+
+    private PredicateGroup preparePredicateGroup(String text, String[] paths) {
+        Map<String, String> predicateMap = new HashMap<>();
+        predicateMap.put(TYPE_KEY, NODE_TYPE);
+        predicateMap.put(FULLTEXT_KEY, text);
+        predicateMap.put(GROUP_OR_FLAG_KEY, Boolean.TRUE.toString());
+        for (int i = 0; i < paths.length; i++) {
+            predicateMap.put(String.format(GROUP_PATH_KEY_PREDICATE_TEMPLATE, i + 1), paths[i]);
+        }
+        return PredicateGroup.create(predicateMap);
+    }
 
     @Override
     public boolean implementsApi(String searchApiName) {
@@ -46,35 +65,28 @@ public class QueryBuilderTextSearchProviderImpl implements TextSearchProvider {
     @Override
     public List<Node> getResult(String[] paths, String text) {
         ResourceResolver resourceResolver = null;
+        QueryBuilder queryBuilder = null;
+        List<Node> nodeList = new ArrayList<>();
 
-        Map<String, Object> param = new HashMap<>();
-        param.put(ResourceResolverFactory.SUBSERVICE, READ_SERVICE);
-        param.put(ResourceResolverFactory.USER, "admin");
-        param.put(ResourceResolverFactory.PASSWORD, "admin".toCharArray());
         try {
-            resourceResolver = resolverFactory.getResourceResolver(param);
-            Map<String, String> predicateMap = new HashMap<>();
-            predicateMap.put("type", NODE_TYPE);
-            predicateMap.put("fulltext", text);
-            predicateMap.put("group.p.or", "true");
-            for (int i = 1; i <= paths.length; i++) {
-                predicateMap.put("group." + i + "path", paths[i - 1]);
-            }
-            QueryBuilder queryBuilder = resourceResolver.adaptTo(QueryBuilder.class);
-            Query query = queryBuilder.createQuery(
-                    PredicateGroup.create(predicateMap),
-                    resourceResolver.adaptTo(Session.class));
-            SearchResult result = query.getResult();
-            List<Node> nodes = new ArrayList<>();
-            Iterator<Node> nodeIterator = result.getNodes();
-            while (nodeIterator.hasNext()) {
-                nodes.add(nodeIterator.next());
-            }
-            return nodes;
+            resourceResolver = resolverFactory.getResourceResolver(textSearchConfig.getAuthParams());
+            queryBuilder = resourceResolver.adaptTo(QueryBuilder.class);
 
         } catch (LoginException e) {
             LOGGER.error(QUERY_BUILDER_ERROR_MSG, e);
         }
-        return null;
+
+        if (queryBuilder != null) {
+            Query query = queryBuilder.createQuery(
+                    preparePredicateGroup(text, paths),
+                    resourceResolver.adaptTo(Session.class));
+            SearchResult result = query.getResult();
+            Iterator<Node> nodeIterator = result.getNodes();
+            while (nodeIterator.hasNext()) {
+                nodeList.add(nodeIterator.next());
+            }
+        }
+
+        return nodeList;
     }
 }
