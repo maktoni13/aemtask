@@ -1,4 +1,4 @@
-package com.aemtask.core.config;
+package com.aemtask.core.company.config;
 
 /**
  * Company name configuration service component for replace filter

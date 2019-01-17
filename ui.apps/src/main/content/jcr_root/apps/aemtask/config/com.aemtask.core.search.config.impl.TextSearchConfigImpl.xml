@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0" jcr:primaryType="sling:OsgiConfig"
+          text="industry leadership"
+          paths="[/content/dam/aemtask]"
+          searchApi="QueryManager"
+          username="admin"
+          password="\{e7821839e4fb0e10946976920267ec8f4d16f1267eae4b037c90e6e5e5c593f6\}"
+/>
