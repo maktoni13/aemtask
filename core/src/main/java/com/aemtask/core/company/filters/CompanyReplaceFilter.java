@@ -1,7 +1,7 @@
-package com.aemtask.core.filters;
+package com.aemtask.core.company.filters;
 
 import com.adobe.acs.commons.util.BufferingResponse;
-import com.aemtask.core.config.CompanyNameConfig;
+import com.aemtask.core.company.config.CompanyNameConfig;
 import org.apache.sling.engine.EngineConstants;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
