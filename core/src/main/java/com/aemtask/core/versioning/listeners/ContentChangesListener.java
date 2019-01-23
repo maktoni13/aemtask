@@ -76,9 +76,9 @@ public class ContentChangesListener implements EventListener {
     @Override
     public void onEvent(EventIterator eventIterator) {
         LOGGER.info(String.format(INFO_MSG_EVENT_PROCESSING_START, eventIterator.toString(), eventIterator.getSize()));
-        try {
-            List<String> rootPageList = new ArrayList<>();
-            while (eventIterator.hasNext()) {
+        List<String> rootPageList = new ArrayList<>();
+        while (eventIterator.hasNext()) {
+            try {
                 Event event = eventIterator.nextEvent();
                 LOGGER.info(String.format(INFO_MSG_START_PROCESSING_SUB_EVENT, event.getPath(), event.getType(), event.getInfo()));
                 Session session = repository.login(versioningConfig.getCredentials());
@@ -101,9 +101,9 @@ public class ContentChangesListener implements EventListener {
                 }
                 rootPageList.add(rootPageNode.getPath());
                 session.logout();
+            } catch (RepositoryException e) {
+                LOGGER.error(ERROR_MSG_TREATING_EVENTS, e);
             }
-        } catch (RepositoryException e) {
-            LOGGER.error(ERROR_MSG_TREATING_EVENTS, e);
         }
     }
 
