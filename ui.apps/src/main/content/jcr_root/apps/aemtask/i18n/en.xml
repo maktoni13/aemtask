@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
           jcr:primaryType="nt:folder"
-          jcr:language="fr"
+          jcr:language="en"
           jcr:mixinTypes="[mix:language]">
     <entry1
-           jcr:mixinTypes="[sling:Message]"
-           jcr:primaryType="nt:folder"
-           sling:key="csv.greeting ((Regular))"
-           sling:message="Bonjour, le monde! {0}"/>
+            jcr:mixinTypes="[sling:Message]"
+            jcr:primaryType="nt:folder"
+            sling:key="csv.greeting ((Regular))"
+            sling:message="Hello, world! {0}"/>
     <entry2
             jcr:mixinTypes="[sling:Message]"
             jcr:primaryType="nt:folder"
             sling:key="csv.greeting ((Special))"
-            sling:message="Bonjour, nouveau monde! {0}"/>
+            sling:message="Hello, new world! {0}"/>
     <copyright
             jcr:mixinTypes="[sling:Message]"
             jcr:primaryType="nt:folder"
