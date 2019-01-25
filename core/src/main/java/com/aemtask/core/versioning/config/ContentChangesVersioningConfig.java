@@ -7,5 +7,4 @@ import javax.jcr.SimpleCredentials;
  */
 public interface ContentChangesVersioningConfig {
     SimpleCredentials getCredentials();
-    boolean isAutoVersioning();
 }
