@@ -1,6 +1,6 @@
-package com.aemtask.core.versioning.config.impl;
+package com.aemtask.core.property.config.impl;
 
-import com.aemtask.core.versioning.config.ContentChangesVersioningConfig;
+import com.aemtask.core.property.config.PropertyRemovalListenerConfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.osgi.service.component.annotations.Activate;
@@ -16,15 +16,15 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.SimpleCredentials;
 
 /**
- * Versioning of content changes configuration service component implementation
+ * Property removal tracker configuration service component implementation
  */
 @Component(
-        service = { ContentChangesVersioningConfig.class },
+        service = {PropertyRemovalListenerConfig.class},
         immediate = true
 )
-@Designate(ocd = ContentChangesVersioningConfigImpl.Config.class)
+@Designate(ocd = PropertyRemovalListenerConfigImpl.Config.class)
 @Setter
-public class ContentChangesVersioningConfigImpl implements ContentChangesVersioningConfig {
+public class PropertyRemovalListenerConfigImpl implements PropertyRemovalListenerConfig {
 
     @ObjectClassDefinition(name = "Versioning of content changes configuration")
     public static @interface Config {

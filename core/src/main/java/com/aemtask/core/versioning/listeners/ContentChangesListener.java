@@ -96,6 +96,7 @@ public class ContentChangesListener implements EventListener {
                     NodeType[] nodeTypes = rootPageNode.getMixinNodeTypes();
                     if (Arrays.stream(nodeTypes).noneMatch(nodeType -> nodeType.isNodeType(NodeType.MIX_VERSIONABLE))) {
                         rootPageNode.addMixin(JcrConstants.MIX_VERSIONABLE);
+                        session.save();
                     }
                     saveVersion(session, rootPageNode);
                 }
