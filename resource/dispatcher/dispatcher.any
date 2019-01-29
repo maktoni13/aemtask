@@ -1,0 +1,81 @@
+# Each farm configures a set of load balanced renders (i.e. remote servers)
+/farms
+  {
+  # First farm entry
+  /website 
+    {  
+    # Request headers that should be forwarded to the remote server.
+    /clientheaders
+      {
+      "*"
+      }
+      
+    # Hostname globbing for farm selection (virtual domain addressing)
+    /virtualhosts
+      {
+      "*"
+      }
+      
+    # The load will be balanced among these render instances
+    /renders
+      {
+      /rend01
+        {
+        # Hostname or IP of the render
+        #/hostname "127.0.0.1"
+        # Port of the render
+        #/port "8080"
+        # Connect timeout in milliseconds, 0 to wait indefinitely
+        # /timeout "0"
+        }
+      }
+      
+    # The filter section defines the requests that should be handled by the dispatcher.
+    /filter
+      {
+       /0001 { /type "deny" /extension '(doc|docx)' }  # deny *.doc, *.docx files
+       /0002 { /type "deny" /url "*.doc" }
+       /0003 { /type "deny" /url "*.docx" }
+      }
+
+    # The cache section regulates what responses will be cached and where.
+    /cache
+      {
+      # The docroot must be equal to the document root of the webserver.
+      /docroot "/opt/dispatcher/cache"
+
+      # Sets the level upto which files named ".stat" will be created
+      #/statfileslevel "0"
+
+      # Flag indicating whether to cache responses to requests that contain authorization information.
+      #/allowAuthorized "0"
+
+      # Flag indicating whether the dispatcher should serve stale content if no remote server is available.
+      #/serveStaleOnError "0"
+
+      # The rules section defines what responses should be cached based on the requested URL
+      /rules
+        {
+        /0001 { /type "allow" /glob "*" }
+        /0002 { /type "deny" /glob "*.html" /selectors '(nocache)' /extension '(html)'}
+
+      # The invalidate section defines the pages that are "invalidated" after any activation.
+      /invalidate
+        {
+        /0000 { /glob "*.html" /type "allow" }
+        }
+
+      # The allowedClients section restricts the client IP addresses that are allowed to issue activation requests.
+      /allowedClients
+        {
+        }
+        
+      # The ignoreUrlParams section contains query string parameter names that should be ignored
+      #/ignoreUrlParams
+
+      }
+      
+    # The statistics sections dictates how the load should be balanced among the renders according to the media-type.
+    # /statistics
+    }
+  }
