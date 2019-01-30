@@ -37,34 +37,34 @@ public class ModifyPermissions {
     }
 
     private void modifyPermissions() {
-        Session adminSession = null;
-        try {
-            adminSession = slingRepository.loginAdministrative(null); // deprecated, but part of the task self-check
-            UserManager userMgr =
-                    ((org.apache.jackrabbit.api.JackrabbitSession) adminSession).getUserManager();
-            AccessControlManager accessControlManager = adminSession.getAccessControlManager();
-            Authorizable denyAccess = userMgr.getAuthorizable(DENY_ACCESS_USER_GROUP);
-            AccessControlPolicyIterator policyIterator =
-                    accessControlManager.getApplicablePolicies(CONTENT_WE_RETAIL_FR);
-            AccessControlList accessControlList;
-            try {
-                accessControlList = (JackrabbitAccessControlList)
-                        policyIterator.nextAccessControlPolicy();
-            } catch (NoSuchElementException e) {
-                accessControlList = (JackrabbitAccessControlList)
-                        accessControlManager.getPolicies(CONTENT_WE_RETAIL_FR)[0];
-            }
-            Privilege[] privileges =
-                    {accessControlManager.privilegeFromName(Privilege.JCR_READ)};
-            accessControlList.addAccessControlEntry(denyAccess.getPrincipal(), privileges);
-            accessControlManager.setPolicy(CONTENT_WE_RETAIL_FR, accessControlList);
-            adminSession.save();
-        } catch (RepositoryException e) {
-            LOGGER.error(ERROR_MSG_REPO_EXCEPTION, e);
-        } finally {
-            if (adminSession != null) {
-                adminSession.logout();
-            }
-        }
+//        Session adminSession = null;
+//        try {
+//            adminSession = slingRepository.loginAdministrative(null); // deprecated, but part of the task self-check
+//            UserManager userMgr =
+//                    ((org.apache.jackrabbit.api.JackrabbitSession) adminSession).getUserManager();
+//            AccessControlManager accessControlManager = adminSession.getAccessControlManager();
+//            Authorizable denyAccess = userMgr.getAuthorizable(DENY_ACCESS_USER_GROUP);
+//            AccessControlPolicyIterator policyIterator =
+//                    accessControlManager.getApplicablePolicies(CONTENT_WE_RETAIL_FR);
+//            AccessControlList accessControlList;
+//            try {
+//                accessControlList = (JackrabbitAccessControlList)
+//                        policyIterator.nextAccessControlPolicy();
+//            } catch (NoSuchElementException e) {
+//                accessControlList = (JackrabbitAccessControlList)
+//                        accessControlManager.getPolicies(CONTENT_WE_RETAIL_FR)[0];
+//            }
+//            Privilege[] privileges =
+//                    {accessControlManager.privilegeFromName(Privilege.JCR_READ)};
+//            accessControlList.addAccessControlEntry(denyAccess.getPrincipal(), privileges);
+//            accessControlManager.setPolicy(CONTENT_WE_RETAIL_FR, accessControlList);
+//            adminSession.save();
+//        } catch (RepositoryException e) {
+//            LOGGER.error(ERROR_MSG_REPO_EXCEPTION, e);
+//        } finally {
+//            if (adminSession != null) {
+//                adminSession.logout();
+//            }
+//        }
     }
 }
